@@ -1,0 +1,41 @@
+﻿@page "/inventory"
+@inject IInventoryUseCases _inventoryUseCase
+
+<h3>List of inventories</h3>
+
+<br />
+<br />
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Total Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (_inventories is not null && _inventories.Count() > 0)
+        {
+            foreach (var inv in _inventories)
+            {
+                <tr>
+                    <td>@inv.Name</td>
+                    <td>@inv.Quantity</td>
+                    <td>@inv.UnitPrice</td>
+                    <td>@inv.TotalPrice</td>
+                </tr>
+            }
+        }
+        
+    </tbody>
+</table>
+
+@code {
+    private List<Inventory>? _inventories;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _inventories = (await _inventoryUseCase.FilterByNameAsync()).ToList();
+    }
+}
